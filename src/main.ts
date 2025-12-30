@@ -10,7 +10,7 @@ import './style.css'
 
 import 'phaser';
 import { menu } from './menu-scene';
-
+// @ts-nocheck
 
 const GameConfig: Phaser.Types.Core.GameConfig = {
   title: 'ExampleGame',

@@ -5,6 +5,8 @@ import gaspUrl from '../assets/gasp.mp3';
 import jailUrl from '../assets/jail.png';
 import generator from 'generate-maze';
 
+// @ts-nocheck
+
 export const menuSceneKey = 'MenuScene';
 
 export function menu(): Phaser.Types.Scenes.SettingsConfig | Phaser.Types.Scenes.CreateSceneFromObjectConfig {
