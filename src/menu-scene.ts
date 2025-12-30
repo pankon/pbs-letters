@@ -3,14 +3,12 @@ import particleUrl from '../assets/policeman.jpeg';
 import badGuyUrl from '../assets/bad_guy.jpeg';
 import gaspUrl from '../assets/gasp.mp3';
 import jailUrl from '../assets/jail.png';
-import generator from 'generate-maze';
-
-// @ts-nocheck
+// import generator from 'generate-maze';
 
 export const menuSceneKey = 'MenuScene';
 
 export function menu(): Phaser.Types.Scenes.SettingsConfig | Phaser.Types.Scenes.CreateSceneFromObjectConfig {
-  let startKey: Phaser.Input.Keyboard.Key;
+  let startKey: Phaser.Input.Keyboard.Key | undefined;
   let sprite: Phaser.GameObjects.Image;
   let targets: { s: Phaser.GameObjects.Text }[];
   let jail: Phaser.GameObjects.Image;
@@ -20,10 +18,10 @@ export function menu(): Phaser.Types.Scenes.SettingsConfig | Phaser.Types.Scenes
     key: menuSceneKey,
     preload() {
       targets = [];
-      startKey = this.input.keyboard.addKey(
+      startKey = this.input.keyboard?.addKey(
         Phaser.Input.Keyboard.KeyCodes.S,
       );
-      startKey.isDown = false;
+      (startKey ?? {} as any).isDown = false;
       this.load.image('particle', particleUrl);
       this.load.image('badGuy', badGuyUrl);
       this.load.image('jail', jailUrl);
@@ -38,12 +36,10 @@ export function menu(): Phaser.Types.Scenes.SettingsConfig | Phaser.Types.Scenes
       jail = this.add.image(399, 500, 'jail');
 
       sprite = this.add.image(100, 100, 'particle');
-      sprite.setInteractive({draggable:true});
-      sprite.on('drag', (pointer, dragX, dragY) => sprite.setPosition(dragX, dragY));
+      sprite.setInteractive({ draggable: true });
+      sprite.on('drag', (_pointer: any, dragX: any, dragY: any) => sprite.setPosition(dragX, dragY));
 
-      const offset = 0.5;
       const letters = 'ABCDEFGHIJKLMOPQRSTUVWXYZ';
-      const number = 100;
       // const maze = generator(number);
       // for (let x = 0; x < number; x++) {
       //   for (let y = 0; y < 4; y++) {
@@ -80,24 +76,25 @@ export function menu(): Phaser.Types.Scenes.SettingsConfig | Phaser.Types.Scenes
       }
     },
     update() {
-      if (startKey.isDown) {
+      if (startKey?.isDown) {
         this.sound.play('gasp');
         this.scene.start(menuSceneKey);
       }
 
       let offsetX = 0;
       let offsetY = 0;
-      let cursors = this.input.keyboard.createCursorKeys();
-      if (cursors.left.isDown) {
-        offsetX = -10;
-      } else if (cursors.right.isDown) {
-        offsetX = 10;
-      } else if (cursors.up.isDown) {
-        offsetY = -10;
-      } else if (cursors.down.isDown) {
-        offsetY = 10;
+      let cursors = this.input.keyboard?.createCursorKeys();
+      if (cursors) {
+        if (cursors.left.isDown) {
+          offsetX = -10;
+        } else if (cursors.right.isDown) {
+          offsetX = 10;
+        } else if (cursors.up.isDown) {
+          offsetY = -10;
+        } else if (cursors.down.isDown) {
+          offsetY = 10;
+        }
       }
-
 
       sprite.y += offsetY; // sprites[i].r;
       sprite.x += offsetX; // sprites[i].r;

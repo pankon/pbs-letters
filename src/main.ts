@@ -10,7 +10,6 @@ import './style.css'
 
 import 'phaser';
 import { menu } from './menu-scene';
-// @ts-nocheck
 
 const GameConfig: Phaser.Types.Core.GameConfig = {
   title: 'ExampleGame',
@@ -28,7 +27,7 @@ const GameConfig: Phaser.Types.Core.GameConfig = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 0 },
+      // gravity: { y: 0 },
       debug: false
     }
   },
