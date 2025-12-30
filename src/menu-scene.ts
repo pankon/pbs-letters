@@ -8,11 +8,13 @@ export const menuSceneKey = 'MenuScene';
 export function menu(): Phaser.Types.Scenes.SettingsConfig | Phaser.Types.Scenes.CreateSceneFromObjectConfig {
   let startKey: Phaser.Input.Keyboard.Key;
   let sprites: { s: Phaser.GameObjects.Image, r: number }[];
+  let targets: { s: Phaser.GameObjects.Text }[];
 
   return {
     key: menuSceneKey,
     preload() {
       sprites = [];
+      targets = [];
       startKey = this.input.keyboard.addKey(
         Phaser.Input.Keyboard.KeyCodes.S,
       );
@@ -58,12 +60,12 @@ export function menu(): Phaser.Types.Scenes.SettingsConfig | Phaser.Types.Scenes
       //   }
       // }
 
-      for (let i = 0; i < 300; i++) {
+      for (let i = 0; i < 10; i++) {
         const x = Phaser.Math.Between(-64, 800);
         const y = Phaser.Math.Between(-64, 600);
 
         let sprite = this.add.text(x, y, letters[i % letters.length], { fontSize: '32px' });
-
+        targets.push({ s: sprite })
         // sprites.push({ s: sprite, r: 2 + Math.random() });
       }
     },
@@ -92,11 +94,34 @@ export function menu(): Phaser.Types.Scenes.SettingsConfig | Phaser.Types.Scenes
         sprite.y += offsetY; // sprites[i].r;
         sprite.x += offsetX; // sprites[i].r;
 
+        if (targets.length < 2) {
+          this.add.text(300, 300, 'YOU WIN!!!!', {
+            fontSize: '60px',
+            fontFamily: "Helvetica",
+          });
+        }
+
+        for (let j = 0; j < targets.length; j++) {
+          let target = targets[j];
+          let bottomLeft = target.s.getBottomLeft();
+          let topRight = target.s.getTopRight();
+          if (
+            bottomLeft.x >= (sprite.x - 100)
+            && topRight.x <= (sprite.x + 100)
+            && bottomLeft.y >= (sprite.y - 100)
+            && topRight.y <= (sprite.y + 100)) {
+            // target.s.setPosition(1000,1000);
+            target.s.setText('👮‍♂️​');
+            targets.splice(j, 1);
+            break;
+          }
+        }
+
         if (sprite.y < -256) {
           sprite.y = 700;
         }
 
-        if (sprite.y > 700) {
+        if (sprite.y > 800) {
           sprite.y = 0;
         }
 
@@ -104,7 +129,7 @@ export function menu(): Phaser.Types.Scenes.SettingsConfig | Phaser.Types.Scenes
           sprite.x = 700;
         }
 
-        if (sprite.x > 700) {
+        if (sprite.x > 800) {
           sprite.x = 0;
         }
       }
