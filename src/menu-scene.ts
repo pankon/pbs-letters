@@ -61,8 +61,8 @@ export function menu(): Phaser.Types.Scenes.SettingsConfig | Phaser.Types.Scenes
       // }
 
       for (let i = 0; i < 10; i++) {
-        const x = Phaser.Math.Between(-64, 800);
-        const y = Phaser.Math.Between(-64, 600);
+        const x = Phaser.Math.Between(0, 800);
+        const y = Phaser.Math.Between(0, 600);
 
         let sprite = this.add.text(x, y, letters[i % letters.length], { fontSize: '32px' });
         targets.push({ s: sprite })
@@ -94,22 +94,23 @@ export function menu(): Phaser.Types.Scenes.SettingsConfig | Phaser.Types.Scenes
         sprite.y += offsetY; // sprites[i].r;
         sprite.x += offsetX; // sprites[i].r;
 
-        if (targets.length < 2) {
+        if (targets.length == 0) {
           this.add.text(300, 300, 'YOU WIN!!!!', {
             fontSize: '60px',
             fontFamily: "Helvetica",
           });
         }
 
+        const range = 50;
         for (let j = 0; j < targets.length; j++) {
           let target = targets[j];
           let bottomLeft = target.s.getBottomLeft();
           let topRight = target.s.getTopRight();
           if (
-            bottomLeft.x >= (sprite.x - 100)
-            && topRight.x <= (sprite.x + 100)
-            && bottomLeft.y >= (sprite.y - 100)
-            && topRight.y <= (sprite.y + 100)) {
+            bottomLeft.x >= (sprite.x - range)
+            && topRight.x <= (sprite.x + range)
+            && bottomLeft.y >= (sprite.y - range)
+            && topRight.y <= (sprite.y + range)) {
             // target.s.setPosition(1000,1000);
             target.s.setText('👮‍♂️​');
             targets.splice(j, 1);
